@@ -1,0 +1,33 @@
+spring:
+  rabbitmq:
+    addresses: localhost:5672
+    username: guest
+    password: guest
+  cloud:
+    stream:
+#      overrideCloudConnectors: true
+      binder:
+        connection-name-prefix: chetan
+      bindings:
+        google_channel:
+          destination: demo
+          contentType: application/text
+          group: myGoogle
+        microsoft_channel:
+          destination: demo
+          contentType: application/text
+          group: myMicrosoft
+      rabbit:
+        bindings:
+          google_channel:
+            consumer:
+              autoBindDlq: true
+              durableSubscription: true
+              exchangeType: direct
+              bindingRoutingKey: google
+          microsoft_channel:
+            consumer:
+              autoBindDlq: true
+              durableSubscription: true
+              exchangeType: direct
+              bindingRoutingKey: microsoft
